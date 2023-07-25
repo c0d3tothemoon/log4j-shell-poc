@@ -16,7 +16,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: log4shell-demo
-        image: public.ecr.aws/f9n2h3p5/log4shellpub:<TAG>
+        image: public.ecr.aws/i9p1a8i7/log4shellpub:<TAG>
         imagePullPolicy: "Always"
         ports:
         - containerPort: 8080
