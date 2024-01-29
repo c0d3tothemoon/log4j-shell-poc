@@ -36,7 +36,7 @@ pipeline {
         
         withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'sample', contextName: '', credentialsId: 'Jenkins_serviceAccount', namespace: 'default', serverUrl: 'https://172.16.16.180:6443']]) 
         {
-        sh 'kubectl apply -f deployment.yaml'
+        sh 'kubectl apply -f deployment.yml'
       }
     }
    }
