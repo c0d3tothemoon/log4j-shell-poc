@@ -39,7 +39,7 @@ pipeline {
       }
     }
     stage ('Image Scan by FortiCNP'){
-      fortiCWPScanner imageName: "archstein/log4shell", block: true
+      fortiCWPScanner block: true, imageName: 'archstein/log4shell'
     }
     stage ('Deploy Container in Kubernetes') {
         steps{    
