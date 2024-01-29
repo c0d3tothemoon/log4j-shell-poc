@@ -1,58 +1,42 @@
 pipeline {
-    agent any
-    environment {
-        IMAGE_REPO_NAME="log4shellpub"
-        //REPLACE XXX WITH YOUR STUDENT NUMBER
-        IMAGE_TAG= "v"        
-        REPOSITORY_URI = "public.ecr.aws/i9p1a8i7/log4shellpub"
-        AWS_DEFAULT_REGION = "us-east-1"
+  environment {
+    dockerimagename = "archstein/log4shell"
+    dockerImage = ""
+  }
+  agent any
+  stages {
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/c0d3tothemoon/jenkins-kubernetes-deployment.git'
+      }
     }
-   
-    stages {
-    
-            stage('Logging into AWS ECR') {
-            steps {
-                script {
-                sh """aws ecr-public get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URI} """
-                }
-                 
-            }
-        } 
-    
-    stage('Clone repository') { 
-            steps { 
-                script{
-                checkout scm
-                }
-            }
-        }  
-  
-    // Building Docker images
-    stage('Building image') {
+    stage('Build image') {
       steps{
         script {
-          dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}-${env.BUILD_NUMBER}"
+          dockerImage = docker.build dockerimagename
         }
       }
     }
-   
-    // Uploading Docker images into AWS ECR
-    stage('Pushing to ECR') {
-     steps{  
-         script {
-                sh """docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG}-${env.BUILD_NUMBER} ${REPOSITORY_URI}:$IMAGE_TAG-${env.BUILD_NUMBER}"""
-                sh """docker push ${REPOSITORY_URI}:${IMAGE_TAG}-${env.BUILD_NUMBER}"""
-         }
+    stage('Pushing Image') {
+      environment {
+          registryCredential = 'archstein'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+          dockerImage.push("latest")
+          }
         }
       }
-      stage('Deploy'){
-            steps {
-                 sh 'sed -i "s/<TAG>/${IMAGE_TAG}-${BUILD_NUMBER}/" deployment.yml'
-                 sh 'kubectl apply -f deployment.yml'
-                 /*
-                 //If you are sure this deployment is already running and want to change the container image version, then you can use:
-                 sh 'kubectl set image deployments/dvwa 371571523880.dkr.ecr.us-east-2.amazonaws.com/dvwaxperts:${BUILD_NUMBER}'*/
-            }
-        } 
     }
+    stage ('K8s Get Node') {
+        steps{    
+        
+        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'sample', contextName: '', credentialsId: 'Jenkins_serviceAccount', namespace: 'default', serverUrl: 'https://172.16.16.180:6443']]) 
+        {
+        sh './kubectl apply -f deployment.yaml'
+      }
+    }
+   }
+ }
 }
