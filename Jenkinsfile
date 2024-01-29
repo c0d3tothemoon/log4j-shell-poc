@@ -5,11 +5,13 @@ pipeline {
   }
   agent any
   stages {
-    stage('Checkout Source') {
-      steps {
-        git 'https://github.com/c0d3tothemoon/jenkins-kubernetes-deployment.git'
-      }
-    }
+    stage('Clone repository') { 
+            steps { 
+                script{
+                checkout scm
+                }
+            }
+        }  
     stage('Build image') {
       steps{
         script {
