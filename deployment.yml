@@ -26,13 +26,10 @@ kind: Service
 metadata:
   name: log4shell-demo
 spec:
-  ports:
-    - port: 8080
-      targetPort: 8080
-      protocol: TCP
   type: NodePort
   ports:
-     - ports: 8080
+     - port: 8080
+       name: log4shell-demo
        nodePort: 30080
   selector:
     app: log4shell-demo
