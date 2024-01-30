@@ -31,5 +31,8 @@ spec:
       targetPort: 8080
       protocol: TCP
   type: NodePort
+  ports:
+     - ports: 8080
+       nodePort: 30080
   selector:
     app: log4shell-demo
