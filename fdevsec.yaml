@@ -17,9 +17,9 @@ id:
 #  - python
 
 # Configures target url where dynamic scan should be performed.
-#dast:
-#  url: https://your.url.com
-#  full_scan: true #true|false
+dast:
+  url: http://129.126.216.62:30080
+  full_scan: true #true|false
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
 #resource:
