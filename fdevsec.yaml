@@ -1,7 +1,6 @@
 id:
-  org: xxxxxxxxxxxxxxxxxx
-  app: xxxxxxxxxxxxxxxxxx
-
+  org: ffcde0e1-6f91-476e-9bdb-76f12e2653c5
+  app: 8f55f23a-0900-4c2e-9100-8beb521f4a1b
 # If below settings are not configured, scans will be performed for all supported scanners.
 #scanners:
 #  - sast
