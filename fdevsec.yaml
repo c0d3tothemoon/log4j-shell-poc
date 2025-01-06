@@ -1,6 +1,6 @@
 id:
   org: ffcde0e1-6f91-476e-9bdb-76f12e2653c5
-  app: 8f55f23a-0900-4c2e-9100-8beb521f4a1b
+  app: e2ab0e25-62b7-45a1-b2cc-d987c1c59f37
 # If below settings are not configured, scans will be performed for all supported scanners.
 #scanners:
 #  - sast
@@ -16,10 +16,10 @@ id:
 #  - python
 
 # Configures target url where dynamic scan should be performed.
-dast:
+#dast:
 #url: http://129.126.216.62:30080
-  url: http://172.16.16.180:30080
-  full_scan: true #true|false
+#  url: http://172.16.16.180:30080
+#  full_scan: true #true|false
 
 # Language scanners run sequentially by default. Can be configured to run in parallel.
 #resource:
